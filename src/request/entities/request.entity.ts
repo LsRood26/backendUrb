@@ -6,6 +6,10 @@ export enum VisitStatus {
   ACCEPTED = 'accepted',
   REJECTED = 'rejected',
 }
+export enum TransportMode {
+  WALK = 'walk',
+  CAR = 'car'
+}
 @Entity()
 export class RequestEntity {
     @PrimaryGeneratedColumn()
@@ -20,6 +24,15 @@ export class RequestEntity {
         default: VisitStatus.PENDING,
     })
     status: VisitStatus;
+    @Column({
+      type: 'enum',
+      enum: TransportMode
+    })
+    transportMode: string;
+    @Column()
+    block:string;
+    @Column()
+    villa:string;
     @ManyToOne(() => User, user => user.residents, { onDelete: 'SET NULL' })
     resident: User;
     @ManyToOne(() => User, user => user.visitors, { onDelete: 'SET NULL' })
