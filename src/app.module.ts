@@ -9,22 +9,29 @@ import { User } from './user/entities/user.entity';
 import { Role } from './role/entities/role.entity';
 import {RequestEntity} from './request/entities/request.entity';
 import { AuthModule } from './auth/auth.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
-  imports: [UserModule, RoleModule, RequestModule, TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',       // Cambia esto según la configuración de tu base de datos
-      port: 5432,
-      username: 'postgres', // Tu usuario de PostgreSQL
-      password: 'postgres', // Tu contraseña de PostgreSQL
-      database: 'urb', // El nombre de tu base de datos
-      entities: [User, Role, RequestEntity],
-      synchronize: true,        // Solo en desarrollo: sincroniza automáticamente los cambios en las entidades con la base de datos
-      autoLoadEntities:true,
-      logging:true
-
+  imports: [ ConfigModule.forRoot({
+      isGlobal: true,
     }),
-    TypeOrmModule.forFeature([User, Role, RequestEntity]),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        host: configService.get<string>('DB_HOST', 'localhost'),
+        port: configService.get<number>('DB_PORT', 5432),
+        username: configService.get<string>('DB_USERNAME', 'postgres'),
+        password: configService.get<string>('DB_PASSWORD', 'postgres'),
+        database: configService.get<string>('DB_DATABASE', ''),
+        entities: [User, Role, RequestEntity],
+        autoLoadEntities: true,
+      }),
+    }),
+    UserModule,
+    RoleModule,
+    RequestModule,
     AuthModule,],
   controllers: [AppController],
   providers: [AppService],
