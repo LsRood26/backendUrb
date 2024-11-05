@@ -19,12 +19,7 @@ export class UserController {
   @Get()
   getData(@Req() req) {
     return this.userService.getRole(req.user.dni);
-  }
-
-  @Get()
-  findAll() {
-    return this.userService.findAll();
-  }
+  }  
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
@@ -32,13 +27,4 @@ export class UserController {
     return user
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
-  }
 }
