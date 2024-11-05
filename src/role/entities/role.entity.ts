@@ -1,8 +1,8 @@
 import { User } from "src/user/entities/user.entity";
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
 @Entity()
 export class Role {
-    @PrimaryGeneratedColumn()
+    @PrimaryColumn()
     id:number;
     @Column()
     name:string;
