@@ -8,6 +8,7 @@ import { IsNotExistRole } from './dto/is.not.role';
 @Module({
   controllers: [RoleController],
   providers: [RoleService, IsNotExistRole],
-  imports:[TypeOrmModule.forFeature([Role])]
+  imports:[TypeOrmModule.forFeature([Role])],
+  exports: [RoleService]
 })
 export class RoleModule {}
