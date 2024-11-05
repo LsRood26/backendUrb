@@ -10,6 +10,7 @@ import { Role } from './role/entities/role.entity';
 import {RequestEntity} from './request/entities/request.entity';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { SeederModule } from './seeders/seeder.module';
 
 @Module({
   imports: [ ConfigModule.forRoot({
@@ -32,7 +33,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     UserModule,
     RoleModule,
     RequestModule,
-    AuthModule,],
+    AuthModule,
+    SeederModule,],
   controllers: [AppController],
   providers: [AppService],
 })

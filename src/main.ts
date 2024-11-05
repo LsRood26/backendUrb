@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import * as bodyParser from 'body-parser';
 import { useContainer } from 'class-validator';
+import { RoleSeeder } from './seeders/role.seeder';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -16,6 +17,9 @@ async function bootstrap() {
       validateCustomDecorators: true,
     }),
   );
+
+  const roleSeeder = app.get(RoleSeeder);
+  await roleSeeder.seed()
   
   await app.listen(process.env.PORT ?? 3000);
 }
