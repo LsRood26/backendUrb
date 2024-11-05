@@ -4,7 +4,7 @@ import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn} from "typeorm";
 @Entity()
 export class User {
     @PrimaryColumn()
-    dni:number;
+    dni:string;
     @Column()
     name:string;
     @Column()

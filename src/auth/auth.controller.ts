@@ -1,5 +1,6 @@
-import { Controller, Post, Body, Request, UnauthorizedException, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Body, Request, UnauthorizedException, HttpException, HttpStatus, HttpCode } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { CreateUserDto } from 'src/user/dto/create-user.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -19,27 +20,14 @@ export class AuthController {
             throw new HttpException('Credenciales invalidas', HttpStatus.UNAUTHORIZED);
         }
 
-        return this.authService.login(user);
+        const access_token = await this.authService.login(user);
+        return {...user, access_token}
     }
 
-    /* @Post('login')
-    async login(@Body()loginDto: {dni: number; password: string}){
-        const user = await this.authService.validateUser(
-            loginDto.dni,
-            loginDto.password,
-        );
-        if (!user) {
-            throw new UnauthorizedException('Credenciales invalidas');
-        }
-        return this.authService.login(user);
-    } */
-   /* @Post('login')
-   async login(@Request() req){
-    const { dni, password} = req.body;
-    const user = await this.authService.validateUser(dni, password);
-    if(!user){
-        return {message: 'Credenciales invalidas'}
+    @HttpCode(201)
+    @Post('register')
+    async register(@Body() body: CreateUserDto){
+        const response = this.authService.register(body)
+        return response;
     }
-    return this.authService.login(user);
-   } */
 }
